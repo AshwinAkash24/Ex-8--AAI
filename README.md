@@ -23,33 +23,29 @@ Step 11: Perform speech recognition with exceptional handling:<Br>
 
 ### Program:
 ```python
-pip install SpeechRecognition
-pip install pyaudio
+!pip install SpeechRecognition
+!pip install pyaudio
 
 import speech_recognition as sr
-r = sr.Recognizer()
-
-duration = 15
-print("Say something:")
-
-with sr.Microphone() as source :
-    audio_data = r.listen(source,timeout = duration)
-
-try:
-    text = r.recognize_google(audio_data)
-    print("You said:", text)
-except sr.UnknownValueError:
-    print("Sorry, could not understand audio")
-except sr.RequestError as e:
-    print(f'Error with the request to Google Speech Recognition service: {e}')
-except Exception as e:
-    print(f'Error: {e}')
-
+def record_audio():
+    r=sr.Recognizer()
+    r.energy_threshold = 6000
+    voicedata=''
+    try:
+        with sr.Microphone() as source:
+            audio=r.listen(source)
+            voicedata=r.recognize_google(audio,language='EN-IN')            
+    except sr.UnknownValueError:
+        print("Unable to Recognize Audio")
+    except sr.RequestError:
+        print("Unable to find the Resource")
+    return voicedata
+print(record_audio())
 ```
 
 
 <H3> Output:</H3>
-<img width="1118" height="58" alt="442488039-46908032-b789-40a0-8aaf-27606ecae5bc" src="https://github.com/user-attachments/assets/f4172f6e-0bce-4760-91f9-b7f28fae9f4d" />
+<img width="234" height="37" alt="image" src="https://github.com/user-attachments/assets/1522a38f-61cb-4b86-8cef-8baa08b3bb42" />
 
 
 <H3> Result:</H3>
